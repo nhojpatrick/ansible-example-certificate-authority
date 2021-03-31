@@ -41,5 +41,6 @@ $ vagrant up touchdown
 ```
 $ vagrant ssh touchdown
 vagrant@touchdown:~$ cd /vagrant/setup/
+vagrant@touchdown:/vagrant/setup$ ansible-playbook -i hosts playbook.yaml
 vagrant@touchdown:/vagrant/setup$
 ```

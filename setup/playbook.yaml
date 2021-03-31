@@ -1,0 +1,7 @@
+---
+
+- name: Pre Req Tasks
+  hosts: all
+  tasks:
+    - name: Pre Req Tasks
+      include_tasks: tasks/prereqs.yaml
