@@ -3,5 +3,11 @@
 - name: Pre Req Tasks
   hosts: all
   tasks:
+
+    - name: Display all variables/facts known for a host
+      debug:
+        var: hostvars[inventory_hostname]
+        verbosity: 1
+
     - name: Pre Req Tasks
       include_tasks: tasks/prereqs.yaml
