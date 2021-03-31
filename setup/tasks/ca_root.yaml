@@ -1,0 +1,37 @@
+---
+
+- name: ca root dir
+  ansible.builtin.file:
+    path: "{{ ca_root_dir }}"
+    state: directory
+
+- name: ca root 'private' dir
+  ansible.builtin.file:
+    path: "{{ ca_root_dir }}/private"
+    state: directory
+
+- name: CA Root Private Key
+  openssl_privatekey:
+  #community.crypto.openssl_privatekey:
+    path: "{{ ca_root_dir }}/private/root-ca.key.pem"
+    passphrase: "{{ ca_root_passphrase }}"
+    cipher: aes256
+  register: ca_root_key
+
+- name: CA Root CSR
+  openssl_csr:
+    path: "{{ ca_root_dir }}/root-ca.csr"
+    common_name: "my-root-ca"
+    privatekey_path: "{{ ca_root_key.filename }}"
+    privatekey_passphrase: "{{ ca_root_passphrase }}"
+  register: ca_root_csr
+
+- name: CA Root sign CSR
+  openssl_certificate:
+  #community.crypto.x509_certificate:
+    path: "{{ ca_root_dir }}/root-ca.crt"
+    csr_path: "{{ ca_root_csr.filename }}"
+    provider: selfsigned
+    privatekey_path: "{{ ca_root_key.filename }}"
+    privatekey_passphrase: "{{ ca_root_passphrase }}"
+  register: ca_root_crt

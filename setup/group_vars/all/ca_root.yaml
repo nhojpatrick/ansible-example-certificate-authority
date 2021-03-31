@@ -1,0 +1,4 @@
+---
+
+ca_root_dir: /vagrant/ca/root
+ca_root_passphrase: "P@ssw0rd"

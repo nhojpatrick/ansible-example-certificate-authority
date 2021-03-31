@@ -11,3 +11,17 @@
 
     - name: Pre Req Tasks
       include_tasks: tasks/prereqs.yaml
+
+- name: CA Root
+  hosts: all
+  tasks:
+
+    - name: CA Root Tasks
+      include_tasks: tasks/ca_root.yaml
+
+- name: CA Intermediate
+  hosts: all
+  tasks:
+
+    - name: CA Intermediate Tasks
+      include_tasks: tasks/ca_intermediate.yaml
