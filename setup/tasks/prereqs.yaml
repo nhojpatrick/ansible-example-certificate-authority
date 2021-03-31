@@ -5,3 +5,10 @@
   ansible.builtin.apt:
     update_cache: yes
   when: ansible_distribution == "Debian"
+
+- name: OpenSSL - Installed
+  become: true
+  ansible.builtin.apt:
+    name: openssl
+    state: present
+  when: ansible_distribution == "Debian"
