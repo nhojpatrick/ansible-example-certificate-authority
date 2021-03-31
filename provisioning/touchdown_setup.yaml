@@ -12,3 +12,4 @@
       line: "{{ item.ip }} {{ item.host }} {{ item.host }}.{{ item.domain }}"
       state: present
     with_items:
+      - { domain: 'example.tld', ip: '192.168.134.190', host: 'cahost' }

@@ -50,4 +50,12 @@ Vagrant.configure("2") do |config|
     end
   end
 
+  config.vm.define "cahost", autostart: true do |inst|
+    # ubuntu 20.04 Focal Fossa 2020-04 - eol 2025-04
+    inst.vm.box = "ubuntu/focal64"
+    inst.vm.boot_timeout = 1200
+    inst.vm.hostname = "cahost"
+    inst.vm.network "private_network", ip: "192.168.134.190"
+  end
+
 end
