@@ -41,7 +41,10 @@ Vagrant.configure("2") do |config|
 
     # automated ansible install fails so manual install
     inst.vm.provision "shell", inline: "sudo apt update"
-    inst.vm.provision "shell", inline: "sudo apt install -y ansible"
+    # 2.10+ for to ansible galaxy 'community.crypto'
+    inst.vm.provision "shell", inline: "sudo add-apt-repository ppa:ansible/ansible"
+    #inst.vm.provision "shell", inline: "sudo apt install -y ansible"
+    inst.vm.provision "shell", inline: "sudo apt install -y ansible-base"
 
     # ansible setup of touchdown
     inst.vm.provision "ansible_local" do |ansible|
