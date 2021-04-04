@@ -19,7 +19,7 @@
 
 - name: CA Root Cert (see if exists)
   stat:
-    path: "{{ ca_root_dir }}/root-ca.crt"
+    path: "{{ ca_root_cert_file }}"
   register: ca_root_cert_stat
 
 - name: CA Root CSR
@@ -35,7 +35,7 @@
 
     - name: CA Root sign CSR
       community.crypto.x509_certificate:
-        path: "{{ ca_root_dir }}/root-ca.crt"
+        path: "{{ ca_root_cert_file }}"
         csr_path: "{{ ca_root_csr.filename }}"
         provider: selfsigned
         privatekey_path: "{{ ca_root_key.filename }}"
@@ -52,7 +52,7 @@
 
 - name: CA Root Cert Info
   community.crypto.x509_certificate_info:
-    path: "{{ ca_root_dir }}/root-ca.crt"
+    path: "{{ ca_root_cert_file }}"
   register: ca_root_cert_info
 
 - name: CA Root Cert Info Debug

@@ -30,8 +30,8 @@
   hosts: all
   vars:
     ca_certs:
-      - "{{ ca_root_dir }}/root-ca.crt"
-      - "{{ ca_intermediate_dir }}/intermediate-ca.crt"
+      - "{{ ca_root_cert_file }}"
+      - "{{ ca_intermediate_cert_file }}"
   tasks:
 
     - name: CA Intermediate Chain read files

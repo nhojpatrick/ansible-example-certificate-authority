@@ -1,4 +1,5 @@
 ---
 
 ca_root_dir: "{{ ca_dir }}/root"
+ca_root_cert_file: "{{ ca_root_dir }}/root-ca.crt"
 ca_root_cert_passphrase: "P@ssw0rd"

@@ -19,7 +19,7 @@
 
 - name: CA Intermediate Cert (see if exists)
   stat:
-    path: "{{ ca_intermediate_dir }}/intermediate-ca.crt"
+    path: "{{ ca_intermediate_cert_file }}"
   register: ca_intermediate_cert_stat
 
 - name: CA Intermediate CSR
@@ -35,10 +35,10 @@
 
     - name: CA Intermediate sign CSR
       community.crypto.x509_certificate:
-        path: "{{ ca_intermediate_dir }}/intermediate-ca.crt"
+        path: "{{ ca_intermediate_cert_file }}"
         csr_path: "{{ ca_intermediate_csr.filename }}"
         provider: ownca
-        ownca_path: "{{ ca_root_dir }}/root-ca.crt"
+        ownca_path: "{{ ca_root_cert_file }}"
         ownca_privatekey_path: "{{ ca_root_key.filename }}"
         ownca_privatekey_passphrase: "{{ ca_root_cert_passphrase }}"
       register: ca_intermediate_crt
@@ -53,7 +53,7 @@
 
 - name: CA Intermediate Cert Info
   community.crypto.x509_certificate_info:
-    path: "{{ ca_intermediate_dir }}/intermediate-ca.crt"
+    path: "{{ ca_intermediate_cert_file }}"
   register: ca_intermediate_cert_info
 
 - name: CA Intermediate Cert Info Debug
