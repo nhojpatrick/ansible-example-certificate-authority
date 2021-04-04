@@ -67,3 +67,14 @@
   with_items:
     - ca_intermediate_cert_info.issuer
     - ca_intermediate_cert_info.subject
+
+- name: CA Intermediate sign CRL
+  community.crypto.x509_crl:
+    path: "{{ ca_intermediate_dir }}/intermediate-ca.crl"
+    privatekey_path: "{{ ca_intermediate_key.filename }}"
+    privatekey_passphrase: "{{ ca_intermediate_passphrase }}"
+    issuer:
+      CN: My CA
+    last_update: "+0s"
+    next_update: "+7d"
+    revoked_certificates: []

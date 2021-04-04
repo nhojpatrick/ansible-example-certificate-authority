@@ -66,3 +66,14 @@
   with_items:
     - ca_root_cert_info.issuer
     - ca_root_cert_info.subject
+
+- name: CA Root sign CRL
+  community.crypto.x509_crl:
+    path: "{{ ca_root_dir }}/root-ca.crl"
+    privatekey_path: "{{ ca_root_key.filename }}"
+    privatekey_passphrase: "{{ ca_root_passphrase }}"
+    issuer:
+      CN: My CA
+    last_update: "+0s"
+    next_update: "+7d"
+    revoked_certificates: []
