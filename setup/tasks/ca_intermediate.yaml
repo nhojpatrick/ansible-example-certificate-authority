@@ -11,8 +11,7 @@
     state: directory
 
 - name: CA Intermediate Private Key
-  openssl_privatekey:
-  #community.crypto.openssl_privatekey:
+  community.crypto.openssl_privatekey:
     path: "{{ ca_intermediate_dir }}/private/intermediate-ca.key.pem"
     passphrase: "{{ ca_intermediate_passphrase }}"
     cipher: aes256
@@ -27,8 +26,7 @@
   register: ca_intermediate_csr
 
 - name: CA Intermediate sign CSR
-  openssl_certificate:
-  #community.crypto.x509_certificate:
+  community.crypto.x509_certificate:
     path: "{{ ca_intermediate_dir }}/intermediate-ca.crt"
     csr_path: "{{ ca_intermediate_csr.filename }}"
     provider: selfsigned
