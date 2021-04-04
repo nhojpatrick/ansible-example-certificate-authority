@@ -1,4 +1,4 @@
 ---
 
-ca_intermediate_dir: /vagrant/ca/intermediate
+ca_intermediate_dir: "{{ ca_dir }}/intermediate"
 ca_intermediate_passphrase: "P@ssw0rd"
