@@ -50,3 +50,20 @@
        file:
          path: "{{ ca_intermediate_dir }}/intermediate-ca.csr"
          state: absent
+
+- name: CA Intermediate Cert Info
+  community.crypto.x509_certificate_info:
+    path: "{{ ca_intermediate_dir }}/intermediate-ca.crt"
+  register: ca_intermediate_cert_info
+
+- name: CA Intermediate Cert Info Debug
+  ansible.builtin.debug:
+    var: ca_intermediate_cert_info
+    verbosity: 1
+
+- name: CA Intermediate Cert Info Debug
+  ansible.builtin.debug:
+    var: "{{ item }}"
+  with_items:
+    - ca_intermediate_cert_info.issuer
+    - ca_intermediate_cert_info.subject

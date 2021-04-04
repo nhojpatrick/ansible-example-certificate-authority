@@ -49,3 +49,20 @@
        file:
          path: "{{ ca_root_dir }}/root-ca.csr"
          state: absent
+
+- name: CA Root Cert Info
+  community.crypto.x509_certificate_info:
+    path: "{{ ca_root_dir }}/root-ca.crt"
+  register: ca_root_cert_info
+
+- name: CA Root Cert Info Debug
+  ansible.builtin.debug:
+    var: ca_root_cert_info
+    verbosity: 1
+
+- name: CA Root Cert Info Debug
+  ansible.builtin.debug:
+    var: "{{ item }}"
+  with_items:
+    - ca_root_cert_info.issuer
+    - ca_root_cert_info.subject
