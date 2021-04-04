@@ -13,7 +13,7 @@
 - name: CA Intermediate Private Key
   community.crypto.openssl_privatekey:
     path: "{{ ca_intermediate_dir }}/private/intermediate-ca.key.pem"
-    passphrase: "{{ ca_intermediate_passphrase }}"
+    passphrase: "{{ ca_intermediate_cert_passphrase }}"
     cipher: aes256
   register: ca_intermediate_key
 
@@ -30,7 +30,7 @@
         path: "{{ ca_intermediate_dir }}/intermediate-ca.csr"
         common_name: "my-intermediate-ca"
         privatekey_path: "{{ ca_intermediate_key.filename }}"
-        privatekey_passphrase: "{{ ca_intermediate_passphrase }}"
+        privatekey_passphrase: "{{ ca_intermediate_cert_passphrase }}"
       register: ca_intermediate_csr
 
     - name: CA Intermediate sign CSR
@@ -40,7 +40,7 @@
         provider: ownca
         ownca_path: "{{ ca_root_dir }}/root-ca.crt"
         ownca_privatekey_path: "{{ ca_root_key.filename }}"
-        ownca_privatekey_passphrase: "{{ ca_root_passphrase }}"
+        ownca_privatekey_passphrase: "{{ ca_root_cert_passphrase }}"
       register: ca_intermediate_crt
 
   when: not ca_intermediate_cert_stat.stat.exists
@@ -72,7 +72,7 @@
   community.crypto.x509_crl:
     path: "{{ ca_intermediate_dir }}/intermediate-ca.crl"
     privatekey_path: "{{ ca_intermediate_key.filename }}"
-    privatekey_passphrase: "{{ ca_intermediate_passphrase }}"
+    privatekey_passphrase: "{{ ca_intermediate_cert_passphrase }}"
     issuer:
       CN: My CA
     last_update: "+0s"
