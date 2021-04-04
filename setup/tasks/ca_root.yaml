@@ -17,19 +17,35 @@
     cipher: aes256
   register: ca_root_key
 
-- name: CA Root CSR
-  community.crypto.openssl_csr:
-    path: "{{ ca_root_dir }}/root-ca.csr"
-    common_name: "my-root-ca"
-    privatekey_path: "{{ ca_root_key.filename }}"
-    privatekey_passphrase: "{{ ca_root_passphrase }}"
-  register: ca_root_csr
-
-- name: CA Root sign CSR
-  community.crypto.x509_certificate:
+- name: CA Root Cert (see if exists)
+  stat:
     path: "{{ ca_root_dir }}/root-ca.crt"
-    csr_path: "{{ ca_root_csr.filename }}"
-    provider: selfsigned
-    privatekey_path: "{{ ca_root_key.filename }}"
-    privatekey_passphrase: "{{ ca_root_passphrase }}"
-  register: ca_root_crt
+  register: ca_root_cert_stat
+
+- name: CA Root CSR
+  block:
+
+    - name: CA Root CSR
+      community.crypto.openssl_csr:
+        path: "{{ ca_root_dir }}/root-ca.csr"
+        common_name: "my-root-ca"
+        privatekey_path: "{{ ca_root_key.filename }}"
+        privatekey_passphrase: "{{ ca_root_passphrase }}"
+      register: ca_root_csr
+
+    - name: CA Root sign CSR
+      community.crypto.x509_certificate:
+        path: "{{ ca_root_dir }}/root-ca.crt"
+        csr_path: "{{ ca_root_csr.filename }}"
+        provider: selfsigned
+        privatekey_path: "{{ ca_root_key.filename }}"
+        privatekey_passphrase: "{{ ca_root_passphrase }}"
+      register: ca_root_crt
+
+  when: not ca_root_cert_stat.stat.exists
+
+  always:
+     - name: Clean up CA Root CSR
+       file:
+         path: "{{ ca_root_dir }}/root-ca.csr"
+         state: absent

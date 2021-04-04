@@ -17,20 +17,36 @@
     cipher: aes256
   register: ca_intermediate_key
 
-- name: CA Intermediate CSR
-  community.crypto.openssl_csr:
-    path: "{{ ca_intermediate_dir }}/intermediate-ca.csr"
-    common_name: "my-intermediate-ca"
-    privatekey_path: "{{ ca_intermediate_key.filename }}"
-    privatekey_passphrase: "{{ ca_intermediate_passphrase }}"
-  register: ca_intermediate_csr
-
-- name: CA Intermediate sign CSR
-  community.crypto.x509_certificate:
+- name: CA Intermediate Cert (see if exists)
+  stat:
     path: "{{ ca_intermediate_dir }}/intermediate-ca.crt"
-    csr_path: "{{ ca_intermediate_csr.filename }}"
-    provider: ownca
-    ownca_path: "{{ ca_root_dir }}/root-ca.crt"
-    ownca_privatekey_path: "{{ ca_root_key.filename }}"
-    ownca_privatekey_passphrase: "{{ ca_root_passphrase }}"
-  register: ca_intermediate_crt
+  register: ca_intermediate_cert_stat
+
+- name: CA Intermediate CSR
+  block:
+
+    - name: CA Intermediate CSR
+      community.crypto.openssl_csr:
+        path: "{{ ca_intermediate_dir }}/intermediate-ca.csr"
+        common_name: "my-intermediate-ca"
+        privatekey_path: "{{ ca_intermediate_key.filename }}"
+        privatekey_passphrase: "{{ ca_intermediate_passphrase }}"
+      register: ca_intermediate_csr
+
+    - name: CA Intermediate sign CSR
+      community.crypto.x509_certificate:
+        path: "{{ ca_intermediate_dir }}/intermediate-ca.crt"
+        csr_path: "{{ ca_intermediate_csr.filename }}"
+        provider: ownca
+        ownca_path: "{{ ca_root_dir }}/root-ca.crt"
+        ownca_privatekey_path: "{{ ca_root_key.filename }}"
+        ownca_privatekey_passphrase: "{{ ca_root_passphrase }}"
+      register: ca_intermediate_crt
+
+  when: not ca_intermediate_cert_stat.stat.exists
+
+  always:
+     - name: Clean up CA Intermediate CSR
+       file:
+         path: "{{ ca_intermediate_dir }}/intermediate-ca.csr"
+         state: absent
