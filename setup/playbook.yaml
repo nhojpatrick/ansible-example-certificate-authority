@@ -25,3 +25,20 @@
 
     - name: CA Intermediate Tasks
       include_tasks: tasks/ca_intermediate.yaml
+
+- name: CA Intermediate Chain
+  hosts: all
+  vars:
+    ca_certs:
+      - "{{ ca_root_dir }}/root-ca.crt"
+      - "{{ ca_intermediate_dir }}/intermediate-ca.crt"
+  tasks:
+
+    - name: CA Intermediate Chain read files
+      command: awk 1 {{ ca_certs | join(' ') }}
+      register: ca_certs_contents
+
+    - name: CA Intermediate Chain create merged file
+      copy:
+        dest: "{{ ca_intermediate_dir }}/chain-ca.pem"
+        content: "{{ ca_certs_contents.stdout_lines | join('\n') }}"
