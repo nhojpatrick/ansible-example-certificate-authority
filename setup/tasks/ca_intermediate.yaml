@@ -29,7 +29,8 @@
   community.crypto.x509_certificate:
     path: "{{ ca_intermediate_dir }}/intermediate-ca.crt"
     csr_path: "{{ ca_intermediate_csr.filename }}"
-    provider: selfsigned
-    privatekey_path: "{{ ca_root_key.filename }}"
-    privatekey_passphrase: "{{ ca_root_passphrase }}"
+    provider: ownca
+    ownca_path: "{{ ca_root_dir }}/root-ca.crt"
+    ownca_privatekey_path: "{{ ca_root_key.filename }}"
+    ownca_privatekey_passphrase: "{{ ca_root_passphrase }}"
   register: ca_intermediate_crt
