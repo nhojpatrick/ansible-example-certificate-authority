@@ -32,4 +32,4 @@
     provider: selfsigned
     privatekey_path: "{{ ca_root_key.filename }}"
     privatekey_passphrase: "{{ ca_root_passphrase }}"
-  register: ca_root_crt
+  register: ca_intermediate_crt
