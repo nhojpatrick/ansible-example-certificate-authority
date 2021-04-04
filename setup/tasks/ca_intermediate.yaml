@@ -18,7 +18,7 @@
   register: ca_intermediate_key
 
 - name: CA Intermediate CSR
-  openssl_csr:
+  community.crypto.openssl_csr:
     path: "{{ ca_intermediate_dir }}/intermediate-ca.csr"
     common_name: "my-intermediate-ca"
     privatekey_path: "{{ ca_intermediate_key.filename }}"

@@ -18,7 +18,7 @@
   register: ca_root_key
 
 - name: CA Root CSR
-  openssl_csr:
+  community.crypto.openssl_csr:
     path: "{{ ca_root_dir }}/root-ca.csr"
     common_name: "my-root-ca"
     privatekey_path: "{{ ca_root_key.filename }}"
